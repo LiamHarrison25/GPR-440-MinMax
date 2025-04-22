@@ -45,9 +45,14 @@ public class Board : MonoBehaviour
                     piece = Instantiate(blackSpace, newPos, Quaternion.identity);
                 }
 
-                isRed = !isRed;
+                if (piece != null)
+                {
+                    piece.transform.SetParent(this.transform);
+                    board.Add(boardSize * i + j, piece);
+                }
 
-                board.Add(boardSize * i + j, piece);
+                isRed = !isRed;
+                
             }
         }
     }
