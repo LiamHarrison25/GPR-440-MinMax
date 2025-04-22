@@ -12,8 +12,8 @@ public class Board : MonoBehaviour
 
     private int boardSize = 8;
 
-    private Dictionary<int, GameObject> tileGameObjects;
-    private Dictionary<int, GameObject> pieceGameObjects;
+    private Dictionary<int, TileObject> tileGameObjects;
+    private Dictionary<int, PieceObject> pieceGameObjects;
 
     private Dictionary<int, Piece> pieces;
     private Dictionary<int, Tile> board;
@@ -28,8 +28,8 @@ public class Board : MonoBehaviour
         int totalSpaces = boardSize * boardSize;
         board = new Dictionary<int, Tile>(totalSpaces);
         pieces = new Dictionary<int, Piece>(totalSpaces);
-        tileGameObjects = new Dictionary<int, GameObject>(totalSpaces);
-        pieceGameObjects = new Dictionary<int, GameObject>(totalSpaces);
+        tileGameObjects = new Dictionary<int, TileObject>(totalSpaces);
+        pieceGameObjects = new Dictionary<int, PieceObject>(totalSpaces);
 
         bool isRed = true;
 
@@ -56,9 +56,15 @@ public class Board : MonoBehaviour
                 if (tileGameObject != null)
                 {
                     tileGameObject.transform.SetParent(this.transform);
-                    tileGameObjects.Add(boardSize * i + j, tileGameObject);
                     Tile tile = new Tile();
                     board.Add(boardSize * i + j, tile);
+
+                    TileObject tileObject = tileGameObject.GetComponent<TileObject>();
+
+                    if(tileObject != null)
+                    {
+                        tileGameObjects[boardSize * i + j] = tileObject;
+                    }
                 }
 
                 if (j <= 2) // Spawn in red pieces
@@ -67,6 +73,13 @@ public class Board : MonoBehaviour
                     {
                         GameObject newPiece = Instantiate(redPiece, newPos, Quaternion.identity);
                         newPiece.transform.SetParent(tileGameObject.transform);
+
+                        PieceObject pObject = newPiece.GetComponent<PieceObject>();
+                        if(pObject != null)
+                        {
+                            pieceGameObjects[boardSize * i + j] = pObject;
+                            pObject.SetTileObject(tileGameObjects[boardSize * i + j]);
+                        }
 
                         Piece piece = new Piece();
                         piece.pieceType = pieceType.Red;
@@ -82,6 +95,13 @@ public class Board : MonoBehaviour
                     {
                         GameObject newPiece = Instantiate(blackPiece, newPos, Quaternion.identity);
                         newPiece.transform.SetParent(tileGameObject.transform);
+
+                        PieceObject pObject = newPiece.GetComponent<PieceObject>();
+                        if (pObject != null)
+                        {
+                            pieceGameObjects[boardSize * i + j] = pObject;
+                            pObject.SetTileObject(tileGameObjects[boardSize * i + j]);
+                        }
 
                         Piece piece = new Piece();
                         piece.pieceType = pieceType.Black;
@@ -101,6 +121,11 @@ public class Board : MonoBehaviour
                 
             }
         }
+    }
+
+    private void CreatePiece(pieceType pieceType)
+    {
+        //TODO: Move the piece creation here
     }
 
     public int GetBoardSize()
