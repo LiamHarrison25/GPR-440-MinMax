@@ -46,5 +46,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   redSpace: {fileID: 7002014745707350560, guid: 8700fd8e537e91649b86a1301f610de6, type: 3}
   blackSpace: {fileID: 104436468909160288, guid: 7f395d598eb794c41a4303c5bcd48fa6, type: 3}
-  pieceSize: 1
+  boardTileSize: 1
   startingPos: {fileID: 4941710297723176111}
+  blackPiece: {fileID: 7241018529756941163, guid: 8e14299dda2144e4d94e1d61ff02450b, type: 3}
+  redPiece: {fileID: 1342433684654319173, guid: c2ec14b1f3ca3c14da389d68ded7c331, type: 3}

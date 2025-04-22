@@ -6,8 +6,10 @@ public class Board : MonoBehaviour
 
     [SerializeField] private GameObject redSpace;
     [SerializeField] private GameObject blackSpace;
-    [SerializeField] private float pieceSize;
+    [SerializeField] private float boardTileSize;
     [SerializeField] private Transform startingPos;
+    [SerializeField] private GameObject blackPiece;
+    [SerializeField] private GameObject redPiece;
 
 
     private int boardSize = 8;
@@ -32,23 +34,39 @@ public class Board : MonoBehaviour
             for (j = 0; j < boardSize; j++)
             {
                 Vector3 newPos = startingPos.position;
-                newPos.x = newPos.x + (pieceSize * i);
-                newPos.y = newPos.y + (pieceSize * j);
+                newPos.x = newPos.x + (boardTileSize * i);
+                newPos.y = newPos.y + (boardTileSize * j);
 
-                GameObject piece;
+                GameObject boardTile;
                 if (isRed)
                 {
-                    piece = Instantiate(redSpace, newPos, Quaternion.identity);
+                    boardTile = Instantiate(redSpace, newPos, Quaternion.identity);
                 }
                 else
                 {
-                    piece = Instantiate(blackSpace, newPos, Quaternion.identity);
+                    boardTile = Instantiate(blackSpace, newPos, Quaternion.identity);
                 }
 
-                if (piece != null)
+                if (boardTile != null)
                 {
-                    piece.transform.SetParent(this.transform);
-                    board.Add(boardSize * i + j, piece);
+                    boardTile.transform.SetParent(this.transform);
+                    board.Add(boardSize * i + j, boardTile);
+                }
+
+                if (j <= 2) // Spawn in red pieces
+                {
+                    if (!isRed)
+                    {
+                        GameObject newPiece = Instantiate(redPiece, newPos, Quaternion.identity);
+                    }
+                    
+                }
+                else if (j >= 5) // Spawn in black pieces
+                {
+                    if (isRed)
+                    {
+                        GameObject newPiece = Instantiate(blackPiece, newPos, Quaternion.identity);
+                    }
                 }
 
                 isRed = !isRed;
